@@ -27,5 +27,8 @@ public class Celula {
     public boolean celulaVazia() {
         return celulaVazia;
     }
+    public void setEmpty(boolean emptyCell) {
+        this.emptyCell = emptyCell;
+    }
    
 }
