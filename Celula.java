@@ -1,3 +1,7 @@
+import java.util.Random;
+
+import javax.xml.validation.Validator;
+
 public class Celula {
     private int x, y;
     private final boolean celulaVazia;
@@ -30,5 +34,17 @@ public class Celula {
     public void setEmpty(boolean emptyCell) {
         this.emptyCell = emptyCell;
     }
+
+    public void embaralhar (int valor)
+    {
+        Random rand = new Random();
+        for (int i = 0; i <= valor; i ++)
+        {
+           valor = rand.nextInt();
+           
+        }
+    }
+
+
    
 }
