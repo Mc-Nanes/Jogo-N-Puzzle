@@ -1,12 +1,17 @@
-package interfaces;
-import java.util.Random;
+package modelos;
 
 
+import javax.swing.*;
 
+import interfaces.CarregarBotao;
+import interfaces.JogoPainel;
+import interfaces.MeuJogo;
 
-public class Celula {
-    public static final int WIDTH = JogoPainel.PANEL_WIDTH  / JogoPainel.BOARD_SIZE ;
-    public static final int HEIGHT = JogoPainel.PANEL_HEIGHT / JogoPainel.BOARD_SIZE;
+import java.awt.*;
+
+public class Celula  extends JButton{
+    public static  int WIDTH = JogoPainel.PANEL_WIDTH  / MeuJogo.BOARD_SIZE ;
+    public static  int HEIGHT = JogoPainel.PANEL_HEIGHT / MeuJogo.BOARD_SIZE;
     private int x, y;
     private final boolean celulaVazia;
     private final String valor;
@@ -17,6 +22,7 @@ public class Celula {
         this.y = y;
         this.valor = valor;
         this.celulaVazia = celulaVazia;
+        initCelula();
     } 
     public int getX() {
         return x;
@@ -38,7 +44,11 @@ public class Celula {
         return celulaVazia;
     }
     
-
+    private void initCelula() {
+        CarregarBotao.loadPreferences(this,Color.red,Color.blue,
+        new Font("Ink Free", Font.BOLD, Celula.WIDTH / 4));
+    }
+    /*
     public void embaralhar (int valor)
     {
         Random rand = new Random();
@@ -48,7 +58,5 @@ public class Celula {
            
         }
     }
-
-
-   
+ */
 }

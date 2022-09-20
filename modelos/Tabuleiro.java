@@ -2,9 +2,7 @@ package modelos;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import interfaces.Celula;
-
-public class Tabuleiro {
+public  class Tabuleiro {
 
     private final int n;
     private final Celula[][]  board;
@@ -32,7 +30,8 @@ public class Tabuleiro {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
 
-                board[i][j] = new Celula(i * Celula.WIDTH + Celula.WIDTH / 2, j * Celula.HEIGHT + Celula.HEIGHT / 2, rollValue(), i == randomX && j == randomY);
+                board[i][j] = new Celula(i * Celula.WIDTH + Celula.WIDTH / 2, j * Celula.HEIGHT + Celula.HEIGHT / 2, rollValue(), 
+                i == randomX && j == randomY);
             }
         }
     }
@@ -50,14 +49,14 @@ public class Tabuleiro {
     }
 
     public void printBoard() {
-        for (int i = 0; i < board.length; i++) {
+        for(Celula[] celulas : board){
             for (int j = 0; j < board.length; j++) {
-                System.out.print(board[i][j].getvalor() + "\t");
+                System.out.print(celulas[j].getvalor() + "\t");
             }
-            System.out.println("");
         }
+        System.out.println("---------------------------"); 
     }
-
+    
     public int getN() {
         return n;
     }
