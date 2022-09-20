@@ -16,6 +16,7 @@ public class Jogo extends JFrame {
     private JButton dificilBotao;
     private JButton insaneButton;
     private JButton demonButton;
+    private JButton malucoButton;
 
     public Jogo() {
         difficultyButtons = new ButtonGroup();
@@ -178,6 +179,7 @@ public class Jogo extends JFrame {
         loadButton(dificilBotao, "DIFICIL", 250, 300, 150, 50);
         loadButton(insaneButton, "INSANO", 410, 300, 150, 50);
         loadButton(demonButton, "DEMONIO", 330, 400, 150, 50);
+        loadButton(malucoButton, "PuzzleMaluco",330 ,100, 150, 50);
     }
 
     private void instantiateAllButtons() {
@@ -187,6 +189,7 @@ public class Jogo extends JFrame {
         insaneButton = new JButton();
         demonButton = new JButton();
         startButton = new JButton();
+        malucoButton = new JButton();
 
     }
 }
