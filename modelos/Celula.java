@@ -45,7 +45,7 @@ public class Celula  extends JButton{
     }
     
     private void initCelula() {
-        CarregarBotao.loadPreferences(this,Color.red,Color.blue,
+        CarregarBotao.loadPreferences(this,Color.red,Color.black,
         new Font("Ink Free", Font.BOLD, Celula.WIDTH / 4));
     }
     /*

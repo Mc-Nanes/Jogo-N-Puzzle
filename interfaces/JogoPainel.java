@@ -23,7 +23,7 @@ public class JogoPainel extends JPanel {
 
     final void loadPreferences() {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.GRAY);
         this.setFocusable(true);
         this.setLayout(null);
     }

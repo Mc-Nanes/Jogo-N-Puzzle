@@ -61,7 +61,7 @@ public class MeuJogo extends JFrame {
 
     private void loadInGameButton(JButton button, String text, int x, int y, int width, boolean isMain) {
         Font inGameButtonFont = isMain ? new Font("MV Boli", Font.PLAIN, 25) : new Font("Magneto Kalın", Font.PLAIN, 25);
-        CarregarBotao.loadPreferences(button, Color.blue, Color.red, inGameButtonFont);
+        CarregarBotao.loadPreferences(button, Color.blue, Color.black, inGameButtonFont);
         CarregarBotao.loadButton(jogoPainel, button, text, true, x, y, width, 50);
 
     }

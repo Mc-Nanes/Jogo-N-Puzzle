@@ -30,7 +30,7 @@ public class Jogo extends JFrame {
         loadAllButtons();
 
         CarregarBotao.loadButton(painel, startButton, "START", true, 250, 500, 310, 50);
-        CarregarBotao.loadPreferences(startButton, Color.black, Color.CYAN, new Font("Ink Free", Font.BOLD, 25));
+        CarregarBotao.loadPreferences(startButton, Color.black, Color.CYAN, new Font("Ink Free", Font.BOLD, 25)); //cor do botão de start
 
         startButton.addActionListener(e -> {
             try {
@@ -46,7 +46,7 @@ public class Jogo extends JFrame {
     final void loadPanel() {
 
         painel.setPreferredSize(new Dimension(800, 800));
-        painel.setBackground(Color.BLACK);
+        painel.setBackground(Color.GRAY);// COR DE BACKGROUND carregamento
         painel.setFocusable(true);
         painel.setLayout(null);
     }
