@@ -10,53 +10,53 @@ import interfaces.MeuJogo;
 import java.awt.*;
 
 public class Celula  extends JButton{
-    public static  int WIDTH = JogoPainel.PANEL_WIDTH  / MeuJogo.BOARD_SIZE ;
-    public static  int HEIGHT = JogoPainel.PANEL_HEIGHT / MeuJogo.BOARD_SIZE;
+    public static int WIDTH = JogoPainel.PANEL_WIDTH / MeuJogo.BOARD_SIZE;
+    public static int HEIGHT = JogoPainel.PANEL_HEIGHT / MeuJogo.BOARD_SIZE;
+
     private int x, y;
-    private final boolean celulaVazia;
-    private final String valor;
-    
-    public Celula(int x, int y, String valor, Boolean celulaVazia) {
+    private final boolean emptyCell;
+    private final String value;
+
+
+    public Celula(int x, int y, String value, Boolean emptyCell) {
         super();
         this.x = x;
         this.y = y;
-        this.valor = valor;
-        this.celulaVazia = celulaVazia;
-        initCelula();
-    } 
+        this.value = value;
+        this.emptyCell = emptyCell;
+        initCell();
+    }
+
     public int getX() {
         return x;
     }
+
     public void setX(int x) {
         this.x = x;
     }
+
     public int getY() {
         return y;
     }
+
     public void setY(int y) {
         this.y = y;
     }
-    
-    public String getvalor() {
-        return valor;
+
+    public String getValue() {
+        return value;
     }
-    public boolean celulaVazia() {
-        return celulaVazia;
+
+    public boolean isEmptyCell() {
+        return emptyCell;
     }
-    
-    private void initCelula() {
-        CarregarBotao.loadPreferences(this,Color.red,Color.black,
-        new Font("Ink Free", Font.BOLD, Celula.WIDTH / 4));
+
+    private void initCell() {
+        CarregarBotao.loadPreferences(this,
+                Color.green,
+                Color.blue,
+                new Font("Ink Free", Font.BOLD, Celula.WIDTH / 4));
     }
-    /*
-    public void embaralhar (int valor)
-    {
-        Random rand = new Random();
-        for (int i = 0; i <= valor; i ++)
-        {
-           valor = rand.nextInt();
-           
-        }
-    }
- */
+
+
 }

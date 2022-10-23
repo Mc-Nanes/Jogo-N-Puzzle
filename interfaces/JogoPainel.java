@@ -9,30 +9,33 @@ public class JogoPainel extends JPanel {
    
     public static int PANEL_WIDTH = 600;
     public static int PANEL_HEIGHT = 600;
-    private final Tabuleiro tabuleiro;
+    
+    private final Tabuleiro gameBoard;
+
     static {
         PANEL_WIDTH += Celula.WIDTH;
         PANEL_HEIGHT += Celula.HEIGHT;
     }
 
     public JogoPainel(int dificuldade) {
-        tabuleiro = new Tabuleiro(dificuldade);
+        gameBoard = new Tabuleiro(dificuldade);
         loadPreferences();
         addActionListeners();
+
     }
 
     final void loadPreferences() {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        this.setBackground(Color.GRAY);
+        this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.setLayout(null);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g); 
+        super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         drawGrid(g);
-        loadCelulas();
+        loadCells();
     }
 
     private void drawGrid(Graphics g) {
@@ -40,127 +43,128 @@ public class JogoPainel extends JPanel {
         g.setColor(Color.black);
         Graphics2D g2 = (Graphics2D) g;
 
-        for (int i = 0; i <= tabuleiro.getN(); i++) {
+        for (int i = 0; i <= gameBoard.getN(); i++) {
             g2.drawLine(Celula.WIDTH / 2 + i * Celula.WIDTH, Celula.HEIGHT / 2, Celula.WIDTH / 2 + i * Celula.WIDTH, PANEL_HEIGHT - Celula.HEIGHT / 2);
         }
 
-        for (int i = 0; i <= tabuleiro.getN(); i++) {
+        for (int i = 0; i <= gameBoard.getN(); i++) {
             g2.drawLine(Celula.WIDTH / 2, Celula.HEIGHT / 2 + Celula.HEIGHT * i, PANEL_WIDTH - Celula.WIDTH / 2, Celula.WIDTH / 2 + Celula.WIDTH * i);
         }
     }
 
     private void addActionListeners() {
-        for (Celula[] Celulas : tabuleiro.getBoard()) {
-            for (Celula Celula : Celulas) {
-                Celula.addActionListener(e -> {
-                    if (moveCelula(Celula))
+        for (Celula[] cells : gameBoard.getBoard()) {
+            for (Celula cell : cells) {
+                cell.addActionListener(e -> {
+                    if (moveCell(cell))
                         repaint();
                     if (checkWinCondition()){
-                        JOptionPane.showMessageDialog(null, "WIN", "Parabéns!", JOptionPane.INFORMATION_MESSAGE);
+                        //Animacao.victoryAnimation(gameBoard.getBoard(),this);
+                        JOptionPane.showMessageDialog(null, "WIN", "!Congrats", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
             }
         }
     }
 
-    private void loadCelulas() {
+    private void loadCells() {
 
-        for (int i = 0; i < tabuleiro.getN(); i++) {
-            for (int j = 0; j < tabuleiro.getN(); j++) {
-                Celula celula = tabuleiro.getBoard()[i][j];
+        for (int i = 0; i < gameBoard.getN(); i++) {
+            for (int j = 0; j < gameBoard.getN(); j++) {
+                Celula cell = gameBoard.getBoard()[i][j];
                 CarregarBotao.loadButton(this,
-                        celula,
-                        celula.getvalor(),
-                        !celula.celulaVazia(),
-                        celula.getX(),
-                        celula.getY(),
+                        cell,
+                        cell.getValue(),
+                        !cell.isEmptyCell(),
+                        cell.getX(),
+                        cell.getY(),
                         Celula.WIDTH * 9 / 10,
                         Celula.HEIGHT * 9 / 10);
             }
         }
     }
 
-    public void debug(Celula celula) {
+    public void debug(Celula cell) {
 
-        int x1 = (Celula.HEIGHT / 2 + celula.getY()) / Celula.HEIGHT - 1;
-        int y1 = (celula.getX() + Celula.WIDTH / 2) / Celula.WIDTH - 1;
+        int x1 = (Celula.HEIGHT / 2 + cell.getY()) / Celula.HEIGHT - 1;
+        int y1 = (cell.getX() + Celula.WIDTH / 2) / Celula.WIDTH - 1;
 
-        System.out.println("[" + x1 + "][" + y1 + "]" + " com valor " + tabuleiro.getBoard()[x1][y1].getvalor() + " ==? " +
-                "Celula na posicao " + "(" + celula.getX() + "," + celula.getY() + ")" + " com valor " + celula.getvalor());
+        System.out.println("[" + x1 + "][" + y1 + "]" + " with value " + gameBoard.getBoard()[x1][y1].getValue() + " ==? " +
+                "cell at position " + "(" + cell.getX() + "," + cell.getY() + ")" + " with value " + cell.getValue());
 
     }
 
-    public boolean moveCelula(Celula Celula) {
+    public boolean moveCell(Celula cell) {
 
-        if (!hasNeighbourEmptyCelula(Celula)) {
-            System.out.println(Celula.getvalor() + " não tem uma celula vizinha vazia");
+        if (!hasNeighbourEmptyCell(cell)) {
+            System.out.println(cell.getValue() + " has not an neighbour empty cell");
             return false;
         }
 
-        Celula emptyCelula = determineEmptyCelula();
+        Celula emptyCell = determineEmptyCell();
 
-        Animacao.animateCelula(Celula, emptyCelula, this);
+        Animacao.animateCell(cell, emptyCell, this);
 
-        swapWith(Celula);
+        swapWith(cell);
 
         return true;
     }
 
-    public Celula determineEmptyCelula() {
-        for (Celula[] Celulas : tabuleiro.getBoard()) {
-            for (Celula Celula : Celulas) {
-                if (Celula.celulaVazia())
-                    return Celula;
+    public Celula determineEmptyCell() {
+        for (Celula[] cells : gameBoard.getBoard()) {
+            for (Celula cell : cells) {
+                if (cell.isEmptyCell())
+                    return cell;
             }
         }
         return null;
     }
 
-    public void swapWith(Celula clickedCelula) {
-        Celula emptyCelula = determineEmptyCelula();
+    public void swapWith(Celula clickedCell) {
+        Celula emptyCell = determineEmptyCell();
 
-        int x1 = (Celula.HEIGHT / 2 + clickedCelula.getY()) / Celula.HEIGHT - 1;
-        int y1 = (clickedCelula.getX() + Celula.WIDTH / 2) / Celula.HEIGHT - 1;
+        int x1 = (Celula.HEIGHT / 2 + clickedCell.getY()) / Celula.HEIGHT - 1;
+        int y1 = (clickedCell.getX() + Celula.WIDTH / 2) / Celula.HEIGHT - 1;
 
 
-        int x2 = (Celula.HEIGHT / 2 + emptyCelula.getY()) / Celula.HEIGHT - 1;
-        int y2 = (emptyCelula.getX() + Celula.WIDTH / 2) / Celula.HEIGHT - 1;
+        int x2 = (Celula.HEIGHT / 2 + emptyCell.getY()) / Celula.HEIGHT - 1;
+        int y2 = (emptyCell.getX() + Celula.WIDTH / 2) / Celula.HEIGHT - 1;
 
-        Celula temp = tabuleiro.getBoard()[x1][y1];
-        tabuleiro.getBoard()[x1][y1] = tabuleiro.getBoard()[x2][y2];
-        tabuleiro.getBoard()[x2][y2] = temp;
+        Celula temp = gameBoard.getBoard()[x1][y1];
+        gameBoard.getBoard()[x1][y1] = gameBoard.getBoard()[x2][y2];
+        gameBoard.getBoard()[x2][y2] = temp;
 
     }
 
-    public boolean hasNeighbourEmptyCelula(Celula celula) {
+    public boolean hasNeighbourEmptyCell(Celula cell) {
 
-        int x1 = (Celula.HEIGHT / 2 + celula.getY()) / Celula.HEIGHT - 1;
-        int y1 = (celula.getX() + Celula.WIDTH / 2) / Celula.WIDTH - 1;
+        int x1 = (Celula.HEIGHT / 2 + cell.getY()) / Celula.HEIGHT - 1;
+        int y1 = (cell.getX() + Celula.WIDTH / 2) / Celula.WIDTH - 1;
 
 
-        Celula[][] board = tabuleiro.getBoard();
+        Celula[][] board = gameBoard.getBoard();
 
         try {
-            if (board[x1][y1 + 1].celulaVazia()) 
+            if (board[x1][y1 + 1].isEmptyCell()) // cell below is empty cell
                 return true;
         } catch (ArrayIndexOutOfBoundsException ignored) {
         }
 
         try {
-            if (board[x1][y1 - 1].celulaVazia())
+            if (board[x1][y1 - 1].isEmptyCell()) // cell above is empty cell
                 return true;
         } catch (ArrayIndexOutOfBoundsException ignored) {
 
         }
         try {
-            if (board[x1 - 1][y1].celulaVazia()) 
+            if (board[x1 - 1][y1].isEmptyCell()) // left cell is empty cell
                 return true;
 
         } catch (ArrayIndexOutOfBoundsException ignored) {
 
         }
         try {
-            if (board[x1 + 1][y1].celulaVazia()) 
+            if (board[x1 + 1][y1].isEmptyCell()) // right below is empty cell
                 return true;
 
         } catch (ArrayIndexOutOfBoundsException ignored) {
@@ -172,9 +176,9 @@ public class JogoPainel extends JPanel {
 
     public boolean checkWinCondition() {
         StringBuilder currentPattern = new StringBuilder();
-        for (Celula[] Celulas : tabuleiro.getBoard()) {
-            for (Celula Celula : Celulas) {
-                currentPattern.append(Celula.getvalor());
+        for (Celula[] cells : gameBoard.getBoard()) {
+            for (Celula cell : cells) {
+                currentPattern.append(cell.getValue());
             }
         }
         return currentPattern.toString().equals(generateWinPattern());
@@ -182,7 +186,7 @@ public class JogoPainel extends JPanel {
 
     private String generateWinPattern() {
         StringBuilder pattern = new StringBuilder();
-        for (int i = 0; i < tabuleiro.getN() * tabuleiro.getN(); i++) {
+        for (int i = 0; i < gameBoard.getN() * gameBoard.getN(); i++) {
             pattern.append(i + 1);
         }
         return pattern.toString();

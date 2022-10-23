@@ -8,20 +8,19 @@ import java.util.Iterator;
 
 public class Jogo extends JFrame {
     public static boolean isMainButtonActivated = false;
-    JPanel painel;
+    JPanel panel;
     private final ButtonGroup difficultyButtons;
     JButton startButton;
-    private JButton facilButao;
+    private JButton easyButton;
     private JButton normalButton;
-    private JButton dificilBotao;
+    private JButton hardButton;
     private JButton insaneButton;
     private JButton demonButton;
-    private JButton malucoButton;
 
     public Jogo() {
         difficultyButtons = new ButtonGroup();
-        painel = new JPanel();
-        this.add(painel);
+        panel = new JPanel();
+        this.add(panel);
 
         loadPanel();
         loadPreferences();
@@ -29,33 +28,33 @@ public class Jogo extends JFrame {
         instantiateAllButtons();
         loadAllButtons();
 
-        CarregarBotao.loadButton(painel, startButton, "START", true, 250, 500, 310, 50);
-        CarregarBotao.loadPreferences(startButton, Color.black, Color.CYAN, new Font("Ink Free", Font.BOLD, 25)); //cor do botão de start
+        CarregarBotao.loadButton(panel, startButton, "START", true, 250, 500, 310, 50);
+        CarregarBotao.loadPreferences(startButton, Color.black, Color.CYAN, new Font("Ink Free", Font.BOLD, 25));
 
         startButton.addActionListener(e -> {
             try {
                 initiateTheGame(getSelectedButton().getText());
             } catch (NullPointerException x) {
                 JOptionPane.showMessageDialog(null,
-                        "Por favor, escolha uma das dificuldades...",
-                        "nenhuma dificuldade selecionada!", JOptionPane.ERROR_MESSAGE);
+                        "PLease choose one of the difficulties...",
+                        "No difficulty selected!", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
 
     final void loadPanel() {
 
-        painel.setPreferredSize(new Dimension(800, 800));
-        painel.setBackground(Color.GRAY);// COR DE BACKGROUND carregamento
-        painel.setFocusable(true);
-        painel.setLayout(null);
+        panel.setPreferredSize(new Dimension(800, 800));
+        panel.setBackground(Color.BLACK);
+        panel.setFocusable(true);
+        panel.setLayout(null);
     }
 
     public void loadButton(JButton button, String text, int x, int y, int width, int height) {
         difficultyButtons.add(button);
         button.setBorder(BorderFactory.createRaisedBevelBorder());
         CarregarBotao.loadPreferences(button, Color.black, Color.yellow, new Font("Ink Free", Font.ITALIC, 25));
-        CarregarBotao.loadButton(painel, button, text, true, x, y, width, height);
+        CarregarBotao.loadButton(panel, button, text, true, x, y, width, height);
 
         button.addActionListener(e -> {
             button.setBorderPainted(true);
@@ -78,7 +77,7 @@ public class Jogo extends JFrame {
 
     final void loadPreferences() {
 
-        this.setTitle("N-PUZZLE");
+        this.setTitle("Options Screen");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
@@ -106,7 +105,7 @@ public class Jogo extends JFrame {
 
     private void initiateTheGame(String choice) {
         switch (choice) {
-            case "FACIL":
+            case "FÁCIL":
                 this.dispose();
                 newGame(2);
                 break;
@@ -114,7 +113,7 @@ public class Jogo extends JFrame {
                 this.dispose();
                 newGame(3);
                 break;
-            case "DIFICL":
+            case "DIFICIL":
                 this.dispose();
                 newGame(4);
                 break;
@@ -122,7 +121,7 @@ public class Jogo extends JFrame {
                 this.dispose();
                 newGame(5);
                 break;
-            case "DEMONIO":
+            case "DEMÔNIO":
                 this.dispose();
                 newGame(6);
                 break;
@@ -135,26 +134,26 @@ public class Jogo extends JFrame {
             adjustComponentSizes(difficulty);
         }
 
-        MeuJogo.BOARD_SIZE = difficulty; 
+        MeuJogo.BOARD_SIZE = difficulty; // adjust the board size before initialization
 
         SwingUtilities.invokeLater(() -> new MeuJogo(difficulty).setVisible(true));
     }
 
     public static void adjustComponentSizes(int difficulty) {
-        
+        //change panel sizes to its default value
         JogoPainel.PANEL_WIDTH -= Celula.WIDTH;
         JogoPainel.PANEL_HEIGHT -= Celula.HEIGHT;
 
-        MeuJogo.BOARD_SIZE = difficulty; 
+        MeuJogo.BOARD_SIZE = difficulty; // adjust the board size before initialization
 
-        
+        // re-calculate the cell sizes, by using the default panel size, according to the new difficulty
         Celula.WIDTH = JogoPainel.PANEL_WIDTH / MeuJogo.BOARD_SIZE;
         Celula.HEIGHT = JogoPainel.PANEL_HEIGHT / MeuJogo.BOARD_SIZE;
 
-       
+        //adjusted
         Animacao.fps = Celula.WIDTH;
 
-        
+        //re-adjust the panel size to its new values
         JogoPainel.PANEL_WIDTH += JogoPainel.PANEL_WIDTH / difficulty;
         JogoPainel.PANEL_HEIGHT += JogoPainel.PANEL_HEIGHT / difficulty;
     }
@@ -174,23 +173,22 @@ public class Jogo extends JFrame {
     }
 
     private void loadAllButtons() {
-        loadButton(facilButao, "FACIL", 250, 200, 150, 50);
+        loadButton(easyButton, "FÁCIL", 250, 200, 150, 50);
         loadButton(normalButton, "NORMAL", 410, 200, 150, 50);
-        loadButton(dificilBotao, "DIFICIL", 250, 300, 150, 50);
+        loadButton(hardButton, "DIFICIL", 250, 300, 150, 50);
         loadButton(insaneButton, "INSANO", 410, 300, 150, 50);
-        loadButton(demonButton, "DEMONIO", 330, 400, 150, 50);
-        loadButton(malucoButton, "PuzzleMaluco",330 ,100, 150, 50);
+        loadButton(demonButton, "DEMÔNIO", 330, 400, 150, 50);
     }
 
     private void instantiateAllButtons() {
-        facilButao = new JButton();
+        easyButton = new JButton();
         normalButton = new JButton();
-        dificilBotao = new JButton();
+        hardButton = new JButton();
         insaneButton = new JButton();
         demonButton = new JButton();
         startButton = new JButton();
-        malucoButton = new JButton();
 
     }
+
 }
 

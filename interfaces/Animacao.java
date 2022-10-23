@@ -7,14 +7,14 @@ public class Animacao {
     public static final int animationSpeed = 1;
     public static int fps = Celula.WIDTH;
 
-    public static void animateCelula(Celula celula, Celula celulaVazia, JPanel panel) {
-        String direcao = detectMovementdirecao(celula, celulaVazia);
+    public static void animateCell(Celula cell, Celula emptyCell, JPanel panel) {
+        String direction = detectMovementDirection(cell, emptyCell);
 
-        int prevPosX = celula.getX();
-        int prevPosY = celula.getY();
+        int prevPosX = cell.getX();
+        int prevPosY = cell.getY();
 
-        switch (direcao) {
-            case "ESQUERDA":
+        switch (direction) {
+            case "LEFT":
                 new Thread(() -> {
                     for (int i = 0; i < fps; i++) {
                         try {
@@ -22,13 +22,13 @@ public class Animacao {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        celula.setX(celula.getX() - 1);
-                        movecelulaVazia(celulaVazia, prevPosX, prevPosY);
+                        cell.setX(cell.getX() - 1);
+                        moveEmptyCell(emptyCell, prevPosX, prevPosY);
                         panel.repaint();
                     }
                 }).start();
                 break;
-            case "DIREITA":
+            case "RIGHT":
                 new Thread(() -> {
                     for (int i = 0; i < fps; i++) {
                         try {
@@ -36,13 +36,13 @@ public class Animacao {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        celula.setX(celula.getX() + Celula.WIDTH / fps);
-                        movecelulaVazia(celulaVazia, prevPosX, prevPosY);
+                        cell.setX(cell.getX() + Celula.WIDTH / fps);
+                        moveEmptyCell(emptyCell, prevPosX, prevPosY);
                         panel.repaint();
                     }
                 }).start();
                 break;
-            case "CIMA":
+            case "UP":
                 new Thread(() -> {
                     for (int i = 0; i < fps; i++) {
                         try {
@@ -50,13 +50,13 @@ public class Animacao {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        movecelulaVazia(celulaVazia, prevPosX, prevPosY);
-                        celula.setY(celula.getY() - Celula.HEIGHT / fps);
+                        moveEmptyCell(emptyCell, prevPosX, prevPosY);
+                        cell.setY(cell.getY() - Celula.HEIGHT / fps);
                         panel.repaint();
                     }
                 }).start();
                 break;
-            case "BAIXO":
+            case "DOWN":
                 new Thread(() -> {
                     for (int i = 0; i < fps; i++) {
                         try {
@@ -64,8 +64,8 @@ public class Animacao {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        celula.setY(celula.getY() + Celula.HEIGHT / fps);
-                        movecelulaVazia(celulaVazia, prevPosX, prevPosY);
+                        cell.setY(cell.getY() + Celula.HEIGHT / fps);
+                        moveEmptyCell(emptyCell, prevPosX, prevPosY);
                         panel.repaint();
                     }
                 }).start();
@@ -73,26 +73,26 @@ public class Animacao {
         }
     }
 
-    private static void movecelulaVazia(Celula celulaVazia, int prevPosX, int prevPosY) {
-        celulaVazia.setX(prevPosX);
-        celulaVazia.setY(prevPosY);
+    private static void moveEmptyCell(Celula emptyCell, int prevPosX, int prevPosY) {
+        emptyCell.setX(prevPosX);
+        emptyCell.setY(prevPosY);
     }
 
-    public static String detectMovementdirecao(Celula celula, Celula celulaVazia) {
+    public static String detectMovementDirection(Celula cell, Celula emptyCell) {
 
-        if (celula.getX() > celulaVazia.getX() && celula.getY() == celulaVazia.getY())
-            return "ESQUERDA";
+        if (cell.getX() > emptyCell.getX() && cell.getY() == emptyCell.getY())
+            return "LEFT";
 
-        if (celula.getX() < celulaVazia.getX() && celula.getY() == celulaVazia.getY())
-            return "DIREITA";
+        if (cell.getX() < emptyCell.getX() && cell.getY() == emptyCell.getY())
+            return "RIGHT";
 
-        if (celula.getY() > celulaVazia.getY() && celula.getX() == celulaVazia.getX())
-            return "CIMA";
+        if (cell.getY() > emptyCell.getY() && cell.getX() == emptyCell.getX())
+            return "UP";
 
-        if (celula.getY() < celulaVazia.getY() && celula.getX() == celulaVazia.getX())
-            return "BAIXO";
+        if (cell.getY() < emptyCell.getY() && cell.getX() == emptyCell.getX())
+            return "DOWN";
 
         return "UNKNOWN";
     }
 
-} 
+}

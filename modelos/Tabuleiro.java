@@ -5,35 +5,32 @@ import java.util.concurrent.ThreadLocalRandom;
 public  class Tabuleiro {
 
     private final int n;
-    private final Celula[][]  board;
-    private final ArrayList<Integer> Valores;
-
+    private final Celula[][] board;
+    private final ArrayList<Integer> valuePool;
 
     public Tabuleiro(int n) {
         this.n = n;
         board = new Celula[n][n];
-        Valores = new ArrayList<>();
-        
-        fillValores();
+        valuePool = new ArrayList<>();
+        fillValuePool();
         fillBoard();
     }
 
-    private void fillValores() {
-        for (int i = 0; i < n * n; i++) {
-            Valores.add(i + 1);
-        }
+    private void fillValuePool() {
+        for (int i = 0; i < n * n; i++) valuePool.add(i + 1);
     }
 
     private void fillBoard() {
+
         int randomX = rollIndex(n);
         int randomY = rollIndex(n);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board[i][j] = new Celula(j * Celula.WIDTH + (Celula.WIDTH / 2),
+                        i * Celula.HEIGHT + (Celula.HEIGHT / 2),
+                        rollValue(),
+                        i == randomX && j == randomY);
 
-                board[i][j] = new Celula(i * Celula.WIDTH + Celula.WIDTH / 2, j * Celula.HEIGHT + Celula.HEIGHT / 2, rollValue(), 
-                i == randomX && j == randomY);
-            }
-        }
     }
 
     private int rollIndex(int bound) {
@@ -41,22 +38,22 @@ public  class Tabuleiro {
     }
 
     private String rollValue() {
-        int index = rollIndex(Valores.size());
-        String value = String.valueOf(Valores.get(index));
-        Valores.remove(Integer.valueOf(value));
+        int index = rollIndex(valuePool.size());
+        String value = String.valueOf(valuePool.get(index));
+        valuePool.remove(Integer.valueOf(value));
 
         return value;
     }
 
     public void printBoard() {
-        for(Celula[] celulas : board){
+        for (Celula[] cells : board) {
             for (int j = 0; j < board.length; j++) {
-                System.out.print(celulas[j].getvalor() + "\t");
+                System.out.print(cells[j].getValue() + "\t");
             }
         }
-        System.out.println("---------------------------"); 
+        System.out.println("---------------------------");
     }
-    
+
     public int getN() {
         return n;
     }
