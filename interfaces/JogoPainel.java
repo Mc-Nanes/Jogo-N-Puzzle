@@ -40,7 +40,7 @@ public class JogoPainel extends JPanel {
 
     private void drawGrid(Graphics g) {
 
-        g.setColor(Color.black);
+        g.setColor(Color.gray);
         Graphics2D g2 = (Graphics2D) g;
 
         for (int i = 0; i <= gameBoard.getN(); i++) {
